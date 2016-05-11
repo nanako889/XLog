@@ -11,7 +11,7 @@ Log level 'i','w' and 'e' 可以出现在发布的正式程序中.
 'setDebug(false)' 不会过滤 'i', 'w', 'e'.如果你不想输出任何log请调用 'setClose(true)';
 
 
-![image](https://github.com/qbwjly/XLog/raw/master/screenshots/s1.png)
+![image](https://raw.githubusercontent.com/qbaowei/XLog/master/screenshots/s1.png)
 
 
 # Download
