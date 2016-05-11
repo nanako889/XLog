@@ -8,7 +8,11 @@
 
 日志级别 'i','w' and 'e' 可以出现在release代码中.
 
-'setDebug(false)' 不会过滤 'i', 'w', 'e'.如果你不想输出任何log请调用 'setClose(true)';
+setDebug(false) 不会过滤 'i','w'和'e', 如果你不想输出任何log请调用 setClose(true).
+
+setFilterTag("logtest"),传入的字符串会显示在日志面板的tag中,便于过滤日志,默认为'xlog'.
+
+setSaveToFile("XLog"),日志保存在sd卡根目录指定的文件夹中.
 
 
 ![image](https://raw.githubusercontent.com/qbaowei/XLog/master/screenshots/s1.png)
