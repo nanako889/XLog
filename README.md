@@ -15,7 +15,7 @@ setFilterTag("logtest"),传入的字符串会显示在日志面板的tag中,便于过滤日志,默认为'
 setSaveToFile("XLog"),日志保存在sd卡根目录指定的文件夹中.
 
 
-![image](https://raw.githubusercontent.com/qbaowei/XLog/master/screenshots/s1.png)
+![image](https://raw.githubusercontent.com/qbaowei/XLog/master/screenshots/s1.jpg)
 
 
 # Download
