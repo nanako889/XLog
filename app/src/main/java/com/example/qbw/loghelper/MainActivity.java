@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
         XLog.setDebug(true);//only close 'v','d'
         XLog.setFilterTag("logtest");
         XLog.setSaveToFile("XLog");
+        XLog.d(null);
     }
 
     @OnClick(R.id.l_btn)

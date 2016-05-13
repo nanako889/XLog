@@ -86,16 +86,20 @@ public class XLog {
     }
 
     private static void l(char type, String logFormat, Object... logParam) {
-        boolean showLog = (('i' == type || 'w' == type || 'e' == type) || debug) && !close;
-        if (showLog || saveToFile) {
-            String log = String.format(logFormat, logParam);
-            String[] logs = createLog(log);
-            if (showLog) {
-                log(type, logs[0], logs[1]);
+        try {
+            boolean showLog = (('i' == type || 'w' == type || 'e' == type) || debug) && !close;
+            if (showLog || saveToFile) {
+                String log = String.format(logFormat, logParam);
+                String[] logs = createLog(log);
+                if (showLog) {
+                    log(type, logs[0], logs[1]);
+                }
+                if (saveToFile) {
+                    writeToFile(logs[0], logs[1]);
+                }
             }
-            if (saveToFile) {
-                writeToFile(logs[0], logs[1]);
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
