@@ -1,6 +1,7 @@
 package com.qbw.log;
 
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -81,8 +82,26 @@ public class XLog {
         l('w', logFormat, logParam);
     }
 
+    public static void w(Exception e) {
+        if (null != e) {
+            String message = e.getMessage();
+            if (!TextUtils.isEmpty(message)) {
+                l('w', message);
+            }
+        }
+    }
+
     public static void e(String logFormat, Object... logParam) {
         l('e', logFormat, logParam);
+    }
+
+    public static void e(Exception e) {
+        if (null != e) {
+            String message = e.getMessage();
+            if (!TextUtils.isEmpty(message)) {
+                l('e', message);
+            }
+        }
     }
 
     private static void l(char type, String logFormat, Object... logParam) {
