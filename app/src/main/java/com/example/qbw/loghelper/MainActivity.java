@@ -27,6 +27,14 @@ public class MainActivity extends Activity {
         XLog.line(true);
         XLog.i("content");
         XLog.line(false);
+
+        try {
+            int i = 1 / 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            XLog.w(e);
+            XLog.e(e);
+        }
     }
 
     @OnClick(R.id.i_btn)

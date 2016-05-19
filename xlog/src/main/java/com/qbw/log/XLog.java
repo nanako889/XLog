@@ -82,7 +82,7 @@ public class XLog {
         l('w', logFormat, logParam);
     }
 
-    public static void w(Exception e) {
+    public static void w(Throwable e) {
         if (null != e) {
             String message = e.getMessage();
             if (!TextUtils.isEmpty(message)) {
@@ -95,7 +95,7 @@ public class XLog {
         l('e', logFormat, logParam);
     }
 
-    public static void e(Exception e) {
+    public static void e(Throwable e) {
         if (null != e) {
             String message = e.getMessage();
             if (!TextUtils.isEmpty(message)) {

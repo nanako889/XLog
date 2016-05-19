@@ -24,7 +24,7 @@ setSaveToFile("XLog"),日志保存在sd卡根目录指定的文件夹中.
 Gradle:
 
 
-compile 'com.qbw.log:xlog:1.2.0'
+compile 'com.qbw.log:xlog:1.2.1'
 
 
 # Author:
