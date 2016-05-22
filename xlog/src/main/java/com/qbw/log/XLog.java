@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author QBW
@@ -192,6 +194,29 @@ public class XLog {
             l('d', "║ " + line);
         }
         l('d', "╚═══════════════════════════════════════════════════════════════════════════════════════");
+    }
+
+    /**
+     * 打印完整url
+     *
+     * @param url
+     * @param mapParam
+     */
+    public static void url(String url, Map<String, String> mapParam) {
+        if (!debug) {
+            return;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(url + "?");
+        if (null != mapParam && !mapParam.isEmpty()) {
+            Set<Map.Entry<String, String>> entrySet = mapParam.entrySet();
+            for (Map.Entry entry : entrySet) {
+                stringBuilder.append(entry.getKey() + "=" + entry.getValue() + "&");
+            }
+
+        }
+        url = stringBuilder.toString();
+        l('d', url.substring(0, url.length() - 1));
     }
 
     public static void line(boolean top) {
