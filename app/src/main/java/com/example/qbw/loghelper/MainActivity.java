@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.qbw.log.XLog;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,6 +38,11 @@ public class MainActivity extends Activity {
             XLog.w(e);
             XLog.e(e);
         }
+        Map<String, String> map = new HashMap<>();
+        map.put("key", "haha");
+        map.put("key1", "haha1");
+        XLog.url("http://www.baidu.com", map);
+        XLog.urlE("http://www.baidu.com", map);
     }
 
     @OnClick(R.id.i_btn)

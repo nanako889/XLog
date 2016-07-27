@@ -206,6 +206,17 @@ public class XLog {
         if (!debug) {
             return;
         }
+        l('d', urlLog(url, mapParam));
+    }
+
+    public static void urlE(String url, Map<String, String> mapParam) {
+        if (!debug) {
+            return;
+        }
+        l('e', urlLog(url, mapParam));
+    }
+
+    public static String urlLog(String url, Map<String, String> mapParam) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(url + "?");
         if (null != mapParam && !mapParam.isEmpty()) {
@@ -216,7 +227,7 @@ public class XLog {
 
         }
         url = stringBuilder.toString();
-        l('d', url.substring(0, url.length() - 1));
+        return url.substring(0, url.length() - 1);
     }
 
     public static void line(boolean top) {
