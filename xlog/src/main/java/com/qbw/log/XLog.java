@@ -241,14 +241,15 @@ public class XLog {
 
     private static String[] createLog(String log) {
         if (null == log) {
-            log = new String("");
+            log = "";
         }
-        String tag = getFileNameMethodLineNumber(6);
+        String tag = debug ? getFileNameMethodLineNumber(6) : "";
         if (null == tag) {
-            tag = new String("");
-        } else {
-            tag = "[" + filterTag + "]" + tag;
+            tag = "";
         }
+
+        tag = "[" + filterTag + "]" + tag;
+
         return new String[]{tag, log};
     }
 
