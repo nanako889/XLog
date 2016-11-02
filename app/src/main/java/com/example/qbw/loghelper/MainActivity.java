@@ -18,8 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        //XLog.setClose(true);//close all log
-        XLog.setDebug(true);//only close 'v','d'
+        XLog.setEnabled(true);
         XLog.setFilterTag("logtest");
         XLog.setSaveToFile("XLog");
         XLog.d(null);

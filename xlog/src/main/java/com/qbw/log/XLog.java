@@ -25,9 +25,11 @@ import java.util.Set;
 
 
 public class XLog {
-    private static boolean debug = false;
+//    private static boolean debug = false;
+//
+//    private static boolean close = false;
 
-    private static boolean close = false;
+    private static boolean sEnabled = false;
 
     private static boolean saveToFile = false;
 
@@ -39,8 +41,17 @@ public class XLog {
 
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
+    public static boolean isEnabled() {
+        return sEnabled;
+    }
+
+    public static void setEnabled(boolean enabled) {
+        sEnabled = enabled;
+    }
+
+    @Deprecated
     public static void setDebug(boolean debug) {
-        XLog.debug = debug;
+        sEnabled = debug;
     }
 
     public static void setSaveToFile(String logDirName) {
@@ -48,16 +59,19 @@ public class XLog {
         XLog.logDirName = logDirName;
     }
 
+    @Deprecated
     public static void setClose(boolean close) {
-        XLog.close = close;
+        sEnabled = close;
     }
 
+    @Deprecated
     public static boolean isDebug() {
-        return debug;
+        return sEnabled;
     }
 
+    @Deprecated
     public static boolean isClose() {
-        return close;
+        return sEnabled;
     }
 
     public static boolean isSaveToFile() {
@@ -108,11 +122,10 @@ public class XLog {
 
     private static void l(char type, String logFormat, Object... logParam) {
         try {
-            boolean showLog = (('i' == type || 'w' == type || 'e' == type) || debug) && !close;
-            if (showLog || saveToFile) {
+            if (sEnabled || saveToFile) {
                 String log = String.format(logFormat, logParam);
                 String[] logs = createLog(log);
-                if (showLog) {
+                if (sEnabled) {
                     log(type, logs[0], logs[1]);
                 }
                 if (saveToFile) {
@@ -165,7 +178,7 @@ public class XLog {
      * @param msg    json format string
      */
     public synchronized static void json(final String header, final String msg) {
-        if (!debug) {
+        if (!sEnabled) {
             return;
         }
 
@@ -203,14 +216,14 @@ public class XLog {
      * @param mapParam
      */
     public static void url(String url, Map<String, String> mapParam) {
-        if (!debug) {
+        if (!sEnabled) {
             return;
         }
         l('d', urlLog(url, mapParam));
     }
 
     public static void urlE(String url, Map<String, String> mapParam) {
-        if (!debug) {
+        if (!sEnabled) {
             return;
         }
         l('e', urlLog(url, mapParam));
@@ -243,7 +256,7 @@ public class XLog {
         if (null == log) {
             log = "";
         }
-        String tag = debug ? getFileNameMethodLineNumber(6) : "";
+        String tag = sEnabled ? getFileNameMethodLineNumber(6) : "";
         if (null == tag) {
             tag = "";
         }
