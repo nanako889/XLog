@@ -25,17 +25,12 @@ import java.util.Set;
 
 
 public class XLog {
-//    private static boolean debug = false;
-//
-//    private static boolean close = false;
 
     private static boolean sEnabled = false;
 
-    private static boolean saveToFile = false;
+    private static String sLogDirPath;
 
-    private static String logDirName = "xlog";
-
-    private static String filterTag = "xlog";
+    private static String sFilterTag = "xlog";
 
     private static final int JSON_INDENT = 4;
 
@@ -46,40 +41,16 @@ public class XLog {
     }
 
     public static void setEnabled(boolean enabled) {
+        setEnabled(enabled, "");
+    }
+
+    public static void setEnabled(boolean enabled, String logDirPath) {
         sEnabled = enabled;
-    }
-
-    @Deprecated
-    public static void setDebug(boolean debug) {
-        sEnabled = debug;
-    }
-
-    public static void setSaveToFile(String logDirName) {
-        XLog.saveToFile = true;
-        XLog.logDirName = logDirName;
-    }
-
-    @Deprecated
-    public static void setClose(boolean close) {
-        sEnabled = close;
-    }
-
-    @Deprecated
-    public static boolean isDebug() {
-        return sEnabled;
-    }
-
-    @Deprecated
-    public static boolean isClose() {
-        return sEnabled;
-    }
-
-    public static boolean isSaveToFile() {
-        return saveToFile;
+        sLogDirPath = logDirPath;
     }
 
     public static void setFilterTag(String filterTag) {
-        XLog.filterTag = filterTag;
+        XLog.sFilterTag = filterTag;
     }
 
     public static void v(String logFormat, Object... logParam) {
@@ -122,13 +93,14 @@ public class XLog {
 
     private static void l(char type, String logFormat, Object... logParam) {
         try {
-            if (sEnabled || saveToFile) {
+            boolean isWriteToFile = !TextUtils.isEmpty(sLogDirPath);
+            if (sEnabled || isWriteToFile) {
                 String log = String.format(logFormat, logParam);
                 String[] logs = createLog(log);
                 if (sEnabled) {
                     log(type, logs[0], logs[1]);
                 }
-                if (saveToFile) {
+                if (isWriteToFile) {
                     writeToFile(logs[0], logs[1]);
                 }
             }
@@ -198,7 +170,8 @@ public class XLog {
             message = msg;
         }
 
-        l('d', "╔═══════════════════════════════════════════════════════════════════════════════════════");
+        l('d',
+          "╔═══════════════════════════════════════════════════════════════════════════════════════");
         message = header + LINE_SEPARATOR + message;
         String[] lines = message.split(LINE_SEPARATOR);
         StringBuffer linesBuffer = new StringBuffer();
@@ -206,7 +179,8 @@ public class XLog {
         for (String line : lines) {
             l('d', "║ " + line);
         }
-        l('d', "╚═══════════════════════════════════════════════════════════════════════════════════════");
+        l('d',
+          "╚═══════════════════════════════════════════════════════════════════════════════════════");
     }
 
     /**
@@ -245,9 +219,11 @@ public class XLog {
 
     public static void line(boolean top) {
         if (top) {
-            l('v', "╔═══════════════════════════════════════════════════════════════════════════════════════");
+            l('v',
+              "╔═══════════════════════════════════════════════════════════════════════════════════════");
         } else {
-            l('v', "╚═══════════════════════════════════════════════════════════════════════════════════════");
+            l('v',
+              "╚═══════════════════════════════════════════════════════════════════════════════════════");
         }
     }
 
@@ -261,7 +237,7 @@ public class XLog {
             tag = "";
         }
 
-        tag = "[" + filterTag + "]" + tag;
+        tag = "[" + sFilterTag + "]" + tag;
 
         return new String[]{tag, log};
     }
@@ -272,23 +248,25 @@ public class XLog {
      */
     private static void writeToFile(String tag, String msg) {
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            Log.e("", "no sd card!!!");
+            Log.e("", "no external storage!!!");
             return;
         }
 
-        final String logDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + logDirName;
         Date date = Calendar.getInstance().getTime();
-        final String logName = String.format("%1$04d%2$02d%3$02d.txt", date.getYear() + 1900, date.getMonth() + 1, date.getDate());
-        File fLogDir = new File(logDir);
+        final String logName = String.format("%1$04d%2$02d%3$02d.txt",
+                                             date.getYear() + 1900,
+                                             date.getMonth() + 1,
+                                             date.getDate());
+        File fLogDir = new File(sLogDirPath);
         if (!fLogDir.exists()) {
             if (!fLogDir.mkdirs()) {
-                Log.e("", "create dir[" + logDir + "]failed!!!");
+                Log.e("", "create dir[" + sLogDirPath + "]failed!!!");
                 return;
             }
         }
 
         try {
-            File f = new File(logDir + File.separator + logName);
+            File f = new File(sLogDirPath + File.separator + logName);
             if (!f.exists()) {
                 if (!f.createNewFile()) {
                     Log.e("", "create file failed");
@@ -298,7 +276,12 @@ public class XLog {
             FileOutputStream fout = new FileOutputStream(f, true);
             OutputStreamWriter swriter = new OutputStreamWriter(fout);
             BufferedWriter bwriter = new BufferedWriter(swriter);
-            bwriter.write(String.format("[%1$02d:%2$02d:%3$02d]%4$50s:%5$s\n", date.getHours(), date.getMinutes(), date.getSeconds(), tag, msg));
+            bwriter.write(String.format("[%1$02d:%2$02d:%3$02d]%4$50s:%5$s\n",
+                                        date.getHours(),
+                                        date.getMinutes(),
+                                        date.getSeconds(),
+                                        tag,
+                                        msg));
             bwriter.flush();
             bwriter.close();
         } catch (IOException e) {
@@ -316,7 +299,10 @@ public class XLog {
         String info = new String("");
         try {
             StackTraceElement e = Thread.currentThread().getStackTrace()[depth];
-            info = String.format("[%1$s,%2$s,%3$s]", e.getFileName(), e.getMethodName(), e.getLineNumber());
+            info = String.format("[%1$s,%2$s,%3$s]",
+                                 e.getFileName(),
+                                 e.getMethodName(),
+                                 e.getLineNumber());
         } catch (Exception e) {
             Log.e("log", "get stack trace element failed!!!");
         }

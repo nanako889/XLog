@@ -2,6 +2,7 @@ package com.example.qbw.loghelper;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.qbw.log.XLog;
 
@@ -18,9 +19,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        XLog.setEnabled(true);
+        String logDir = getExternalFilesDir("log").getAbsolutePath();
+        Log.e("-----", logDir);
+        XLog.setEnabled(true, logDir);
         XLog.setFilterTag("logtest");
-        XLog.setSaveToFile("XLog");
         XLog.d(null);
     }
 
