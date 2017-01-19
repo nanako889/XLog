@@ -49,6 +49,17 @@ public class XLog {
         sLogDirPath = logDirPath;
     }
 
+    @Deprecated
+    public static boolean isDebug() {
+        return sEnabled;
+    }
+
+    @Deprecated
+    public static boolean isClose() {
+        return sEnabled;
+    }
+
+
     public static void setFilterTag(String filterTag) {
         XLog.sFilterTag = filterTag;
     }
