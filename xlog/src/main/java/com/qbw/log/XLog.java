@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedWriter;
@@ -160,38 +159,104 @@ public class XLog {
      * @param header you can set this value your http param
      * @param msg    json format string
      */
-    public synchronized static void json(final String header, final String msg) {
+    @Deprecated
+    public static void json(final String header, final String msg) {
         if (!sEnabled) {
             return;
         }
 
-        String message;
+        String jsonLog = jsonLog(header + msg);
+        l('d', jsonLog);
+    }
 
+    public static void jsonV(String message) {
+        if (!sEnabled) {
+            return;
+        }
+        l('v', jsonLog(message));
+    }
+
+    public static void jsonD(String message) {
+        if (!sEnabled) {
+            return;
+        }
+        l('d', jsonLog(message));
+    }
+
+    public static void jsonI(String message) {
+        if (!sEnabled) {
+            return;
+        }
+        l('i', jsonLog(message));
+    }
+
+    public static void jsonW(String message) {
+        if (!sEnabled) {
+            return;
+        }
+        l('w', jsonLog(message));
+    }
+
+    public static void jsonE(String message) {
+        if (!sEnabled) {
+            return;
+        }
+        l('e', jsonLog(message));
+    }
+
+
+    public static String jsonLog(String message) {
+        if (TextUtils.isEmpty(message)) {
+            return "";
+        }
         try {
-            if (msg.startsWith("{")) {
-                JSONObject jsonObject = new JSONObject(msg);
-                message = jsonObject.toString(JSON_INDENT);
-            } else if (msg.startsWith("[")) {
-                JSONArray jsonArray = new JSONArray(msg);
-                message = jsonArray.toString(JSON_INDENT);
+            int job = message.indexOf("{");
+            int joe = message.lastIndexOf("}");
+            int jab = message.indexOf("[");
+            int jae = message.lastIndexOf("]");
+            /**
+             * -1,不存在json格式字符串
+             * 0,jsonobject
+             * 1,jsonarray
+             */
+            int type;
+            if (job != -1 && (-1 == jab || job < jab) && joe != -1 && joe > job) {
+                type = 0;
+            } else if (jab != -1 && (-1 == job || jab < job) && jae != -1 && jae > jab) {
+                type = 1;
             } else {
-                message = msg;
+                type = -1;
             }
-        } catch (JSONException e) {
-            message = msg;
-        }
+            if (type == -1) {
+                return message;
+            } else {
+                StringBuilder jsonLog = new StringBuilder();
 
-        l('d',
-          "╔═══════════════════════════════════════════════════════════════════════════════════════");
-        message = header + LINE_SEPARATOR + message;
-        String[] lines = message.split(LINE_SEPARATOR);
-        StringBuffer linesBuffer = new StringBuffer();
-        linesBuffer.append(LINE_SEPARATOR);
-        for (String line : lines) {
-            l('d', "║ " + line);
+                switch (type) {
+                    case 0:
+                        jsonLog.append(message.substring(0, job)).append(LINE_SEPARATOR);
+                        jsonLog.append(new JSONObject(message.substring(job, joe + 1)).toString(
+                                JSON_INDENT)).append(LINE_SEPARATOR);
+                        jsonLog.append(message.substring(joe + 1, message.length()))
+                               .append(LINE_SEPARATOR);
+                        break;
+                    case 1:
+                        jsonLog.append(message.substring(0, jab)).append(LINE_SEPARATOR);
+                        jsonLog.append(new JSONArray(message.substring(jab, jae + 1)).toString(
+                                JSON_INDENT)).append(LINE_SEPARATOR);
+                        jsonLog.append(message.substring(jae + 1, message.length()))
+                               .append(LINE_SEPARATOR);
+                        break;
+                    default:
+                        break;
+                }
+
+                return jsonLog.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        l('d',
-          "╚═══════════════════════════════════════════════════════════════════════════════════════");
+        return "";
     }
 
     /**
@@ -200,11 +265,40 @@ public class XLog {
      * @param url
      * @param mapParam
      */
+    @Deprecated
     public static void url(String url, Map<String, String> mapParam) {
         if (!sEnabled) {
             return;
         }
         l('d', urlLog(url, mapParam));
+    }
+
+    public static void urlV(String url, Map<String, String> mapParam) {
+        if (!sEnabled) {
+            return;
+        }
+        l('v', urlLog(url, mapParam));
+    }
+
+    public static void urlD(String url, Map<String, String> mapParam) {
+        if (!sEnabled) {
+            return;
+        }
+        l('d', urlLog(url, mapParam));
+    }
+
+    public static void urlI(String url, Map<String, String> mapParam) {
+        if (!sEnabled) {
+            return;
+        }
+        l('i', urlLog(url, mapParam));
+    }
+
+    public static void urlW(String url, Map<String, String> mapParam) {
+        if (!sEnabled) {
+            return;
+        }
+        l('w', urlLog(url, mapParam));
     }
 
     public static void urlE(String url, Map<String, String> mapParam) {

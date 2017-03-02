@@ -6,6 +6,10 @@ import android.util.Log;
 
 import com.qbw.log.XLog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +48,10 @@ public class MainActivity extends Activity {
         map.put("key1", "haha1");
         XLog.url("http://www.baidu.com", map);
         XLog.urlE("http://www.baidu.com", map);
+        XLog.urlD("http://www.baidu.com", map);
+        XLog.urlI("http://www.baidu.com", map);
+        XLog.urlW("http://www.baidu.com", map);
+        XLog.urlV("http://www.baidu.com", map);
     }
 
     @OnClick(R.id.i_btn)
@@ -62,15 +70,19 @@ public class MainActivity extends Activity {
     }
 
     int j;
+
     @OnClick(R.id.json_btn)
     void json1() {
-        for (int i = 0; i < 5; i++) {
-            new Thread(){
-                @Override
-                public void run() {
-                    XLog.json("you can set http url and param here", String.format("{code:%d,msg:'success'}", j++));
-                }
-            }.start();
-        }
+
+        XLog.jsonV("{\"code\":1,\"id\":2,\"age\":23,\"data\":[{\"code\":1},{\"code\":2}]}");
+        XLog.jsonV("[{\"code\":1},{\"code\":2}]");
+        XLog.jsonE("{\"code\":1,\"id\":2,\"age\":23}");
+        XLog.jsonD("¹þ¹þ{\"code\":1}");
+        XLog.jsonI("{\"code\":1}ÎûÎû");
+        XLog.jsonW("¹þ¹þ{\"code\":1}ÎûÎû");
+        XLog.jsonD("¹þ¹þ[{\"code\":1},{\"code\":2}]");
+        XLog.jsonI("[{\"code\":1},{\"code\":2}]ÎûÎû");
+        XLog.jsonW("¹þ¹þ[{\"code\":1},{\"code\":2}]ÎûÎû");
+
     }
 }
