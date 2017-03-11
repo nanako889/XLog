@@ -77,12 +77,6 @@ public class MainActivity extends Activity {
         XLog.jsonV("{\"code\":1,\"id\":2,\"age\":23,\"data\":[{\"code\":1},{\"code\":2}]}");
         XLog.jsonV("[{\"code\":1},{\"code\":2}]");
         XLog.jsonE("{\"code\":1,\"id\":2,\"age\":23}");
-        XLog.jsonD("¹þ¹þ{\"code\":1}");
-        XLog.jsonI("{\"code\":1}ÎûÎû");
-        XLog.jsonW("¹þ¹þ{\"code\":1}ÎûÎû");
-        XLog.jsonD("¹þ¹þ[{\"code\":1},{\"code\":2}]");
-        XLog.jsonI("[{\"code\":1},{\"code\":2}]ÎûÎû");
-        XLog.jsonW("¹þ¹þ[{\"code\":1},{\"code\":2}]ÎûÎû");
 
     }
 }
