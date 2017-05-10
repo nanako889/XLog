@@ -18,7 +18,7 @@ setFilterTag,传入的字符串会显示在日志面板的tag中,便于过滤日志,默认为'xlog'.
 Gradle:
 
 
-compile 'com.qbw.log:xlog:1.7.0'
+compile 'com.qbw.log:xlog:1.7.2'
 
 
 # Author:

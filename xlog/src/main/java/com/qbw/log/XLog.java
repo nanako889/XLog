@@ -84,6 +84,8 @@ public class XLog {
             String message = e.getMessage();
             if (!TextUtils.isEmpty(message)) {
                 l('w', message);
+            } else {
+                l('w', "message is empty");
             }
         }
     }
@@ -97,6 +99,8 @@ public class XLog {
             String message = e.getMessage();
             if (!TextUtils.isEmpty(message)) {
                 l('e', message);
+            } else {
+                l('e', "message is empty");
             }
         }
     }
@@ -115,7 +119,12 @@ public class XLog {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e != null) {
+                String msg = e.getMessage();
+                if (!TextUtils.isEmpty(msg)) {
+                    Log.w("xlog", msg);
+                }
+            }
         }
     }
 
@@ -254,7 +263,12 @@ public class XLog {
                 return jsonLog.toString();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e != null) {
+                String msg = e.getMessage();
+                if (!TextUtils.isEmpty(msg)) {
+                    Log.w("xlog", msg);
+                }
+            }
         }
         return "";
     }
