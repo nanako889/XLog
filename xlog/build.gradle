@@ -7,7 +7,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
-        versionName "2.1"
+        versionName "2.2"
     }
     buildTypes {
         release {
@@ -23,18 +23,18 @@ dependencies {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'xlogger'
+    bintrayName = 'xlog'
 
     publishedGroupId = 'com.qbw.log'
-    libraryName = 'xlogger'
-    artifact = 'xlogger'
+    libraryName = 'xlog'
+    artifact = 'xlog'
 
     libraryDescription = 'A log helper which can show file name ,method name and line number.Also it can show json format String.'
 
-    siteUrl = 'https://github.com/qbaowei/XLog'
-    gitUrl = 'https://github.com/qbaowei/XLog'
+    siteUrl = ''
+    gitUrl = ''
 
-    libraryVersion = '2.1'
+    libraryVersion = '3.2'
 
     developerId = 'qinbaowei'
     developerName = 'qinbaowei'
