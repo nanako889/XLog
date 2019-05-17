@@ -7,7 +7,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
-        versionName "2.0"
+        versionName "2.1"
     }
     buildTypes {
         release {
@@ -34,7 +34,7 @@ ext {
     siteUrl = 'https://github.com/qbaowei/XLog'
     gitUrl = 'https://github.com/qbaowei/XLog'
 
-    libraryVersion = '2.0'
+    libraryVersion = '2.1'
 
     developerId = 'qinbaowei'
     developerName = 'qinbaowei'
