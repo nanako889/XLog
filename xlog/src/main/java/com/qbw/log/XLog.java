@@ -25,61 +25,53 @@ import java.util.Set;
 
 public class XLog {
 
-    private static boolean sEnabled = false;
+    private static String sCommonFilterTag = "[xlog]";
 
-    private static String sLogDirPath;
+    private boolean mEnabled = false;
 
-    private static String sFilterTag = "xlog";
+    private String mLogDirPath;
 
-    private static final int JSON_INDENT = 4;
+    private String mFilterTag = "";
 
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private final int JSON_INDENT = 4;
 
-    public static boolean isEnabled() {
-        return sEnabled;
+    private final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    public boolean isEnabled() {
+        return mEnabled;
     }
 
-    public static void setEnabled(boolean enabled) {
+    public void setEnabled(boolean enabled) {
         setEnabled(enabled, "");
     }
 
-    public static void setEnabled(boolean enabled, String logDirPath) {
-        sEnabled = enabled;
-        sLogDirPath = logDirPath;
-    }
-
-    @Deprecated
-    public static boolean isDebug() {
-        return sEnabled;
-    }
-
-    @Deprecated
-    public static boolean isClose() {
-        return sEnabled;
+    public void setEnabled(boolean enabled, String logDirPath) {
+        mEnabled = enabled;
+        mLogDirPath = logDirPath;
     }
 
 
-    public static void setFilterTag(String filterTag) {
-        XLog.sFilterTag = filterTag;
+    public void setFilterTag(String filterTag) {
+        mFilterTag = filterTag;
     }
 
-    public static void v(String logFormat, Object... logParam) {
+    public void v(String logFormat, Object... logParam) {
         l('v', logFormat, logParam);
     }
 
-    public static void d(String logFormat, Object... logParam) {
+    public void d(String logFormat, Object... logParam) {
         l('d', logFormat, logParam);
     }
 
-    public static void i(String logFormat, Object... logParam) {
+    public void i(String logFormat, Object... logParam) {
         l('i', logFormat, logParam);
     }
 
-    public static void w(String logFormat, Object... logParam) {
+    public void w(String logFormat, Object... logParam) {
         l('w', logFormat, logParam);
     }
 
-    public static void w(Throwable e) {
+    public void w(Throwable e) {
         if (null != e) {
             String message = e.getMessage();
             if (!TextUtils.isEmpty(message)) {
@@ -90,11 +82,11 @@ public class XLog {
         }
     }
 
-    public static void e(String logFormat, Object... logParam) {
+    public void e(String logFormat, Object... logParam) {
         l('e', logFormat, logParam);
     }
 
-    public static void e(Throwable e) {
+    public void e(Throwable e) {
         if (null != e) {
             String message = e.getMessage();
             if (!TextUtils.isEmpty(message)) {
@@ -105,13 +97,53 @@ public class XLog {
         }
     }
 
-    private static void l(char type, String logFormat, Object... logParam) {
+    public void jsonV(String message) {
+        l('v', jsonLog(message));
+    }
+
+    public void jsonD(String message) {
+        l('d', jsonLog(message));
+    }
+
+    public void jsonI(String message) {
+        l('i', jsonLog(message));
+    }
+
+    public void jsonW(String message) {
+        l('w', jsonLog(message));
+    }
+
+    public void jsonE(String message) {
+        l('e', jsonLog(message));
+    }
+
+    public void urlV(String url, Map<String, String> mapParam) {
+        l('v', urlLog(url, mapParam));
+    }
+
+    public void urlD(String url, Map<String, String> mapParam) {
+        l('d', urlLog(url, mapParam));
+    }
+
+    public void urlI(String url, Map<String, String> mapParam) {
+        l('i', urlLog(url, mapParam));
+    }
+
+    public void urlW(String url, Map<String, String> mapParam) {
+        l('w', urlLog(url, mapParam));
+    }
+
+    public void urlE(String url, Map<String, String> mapParam) {
+        l('e', urlLog(url, mapParam));
+    }
+
+    private void l(char type, String logFormat, Object... logParam) {
         try {
-            boolean isWriteToFile = !TextUtils.isEmpty(sLogDirPath);
-            if (sEnabled || isWriteToFile) {
+            boolean isWriteToFile = !TextUtils.isEmpty(mLogDirPath);
+            if (mEnabled || isWriteToFile) {
                 String log = String.format(logFormat, logParam);
                 String[] logs = createLog(log);
-                if (sEnabled) {
+                if (mEnabled) {
                     log(type, logs[0], logs[1]);
                 }
                 if (isWriteToFile) {
@@ -135,7 +167,7 @@ public class XLog {
      * @param tag
      * @param text
      */
-    private static void log(char level, String tag, String text) {
+    private void log(char level, String tag, String text) {
         final int PART_LEN = 3000;
 
         do {
@@ -164,57 +196,7 @@ public class XLog {
         } while (text.length() > 0);
     }
 
-    /**
-     * @param header you can set this value your http param
-     * @param msg    json format string
-     */
-    @Deprecated
-    public static void json(final String header, final String msg) {
-        if (!sEnabled) {
-            return;
-        }
-
-        String jsonLog = jsonLog(header + msg);
-        l('d', jsonLog);
-    }
-
-    public static void jsonV(String message) {
-        if (!sEnabled) {
-            return;
-        }
-        l('v', jsonLog(message));
-    }
-
-    public static void jsonD(String message) {
-        if (!sEnabled) {
-            return;
-        }
-        l('d', jsonLog(message));
-    }
-
-    public static void jsonI(String message) {
-        if (!sEnabled) {
-            return;
-        }
-        l('i', jsonLog(message));
-    }
-
-    public static void jsonW(String message) {
-        if (!sEnabled) {
-            return;
-        }
-        l('w', jsonLog(message));
-    }
-
-    public static void jsonE(String message) {
-        if (!sEnabled) {
-            return;
-        }
-        l('e', jsonLog(message));
-    }
-
-
-    public static String jsonLog(String message) {
+    public String jsonLog(String message) {
         if (TextUtils.isEmpty(message)) {
             return "";
         }
@@ -247,14 +229,14 @@ public class XLog {
                         jsonLog.append(new JSONObject(message.substring(job, joe + 1)).toString(
                                 JSON_INDENT)).append(LINE_SEPARATOR);
                         jsonLog.append(message.substring(joe + 1, message.length()))
-                               .append(LINE_SEPARATOR);
+                                .append(LINE_SEPARATOR);
                         break;
                     case 1:
                         jsonLog.append(message.substring(0, jab)).append(LINE_SEPARATOR);
                         jsonLog.append(new JSONArray(message.substring(jab, jae + 1)).toString(
                                 JSON_INDENT)).append(LINE_SEPARATOR);
                         jsonLog.append(message.substring(jae + 1, message.length()))
-                               .append(LINE_SEPARATOR);
+                                .append(LINE_SEPARATOR);
                         break;
                     default:
                         break;
@@ -273,56 +255,7 @@ public class XLog {
         return "";
     }
 
-    /**
-     * 打印完整url
-     *
-     * @param url
-     * @param mapParam
-     */
-    @Deprecated
-    public static void url(String url, Map<String, String> mapParam) {
-        if (!sEnabled) {
-            return;
-        }
-        l('d', urlLog(url, mapParam));
-    }
-
-    public static void urlV(String url, Map<String, String> mapParam) {
-        if (!sEnabled) {
-            return;
-        }
-        l('v', urlLog(url, mapParam));
-    }
-
-    public static void urlD(String url, Map<String, String> mapParam) {
-        if (!sEnabled) {
-            return;
-        }
-        l('d', urlLog(url, mapParam));
-    }
-
-    public static void urlI(String url, Map<String, String> mapParam) {
-        if (!sEnabled) {
-            return;
-        }
-        l('i', urlLog(url, mapParam));
-    }
-
-    public static void urlW(String url, Map<String, String> mapParam) {
-        if (!sEnabled) {
-            return;
-        }
-        l('w', urlLog(url, mapParam));
-    }
-
-    public static void urlE(String url, Map<String, String> mapParam) {
-        if (!sEnabled) {
-            return;
-        }
-        l('e', urlLog(url, mapParam));
-    }
-
-    public static String urlLog(String url, Map<String, String> mapParam) {
+    public String urlLog(String url, Map<String, String> mapParam) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(url + "?");
         if (null != mapParam && !mapParam.isEmpty()) {
@@ -336,27 +269,27 @@ public class XLog {
         return url.substring(0, url.length() - 1);
     }
 
-    public static void line(boolean top) {
+    public void line(boolean top) {
         if (top) {
             l('v',
-              "╔═══════════════════════════════════════════════════════════════════════════════════════");
+                    "╔═══════════════════════════════════════════════════════════════════════════════════════");
         } else {
             l('v',
-              "╚═══════════════════════════════════════════════════════════════════════════════════════");
+                    "╚═══════════════════════════════════════════════════════════════════════════════════════");
         }
     }
 
 
-    private static String[] createLog(String log) {
+    private String[] createLog(String log) {
         if (null == log) {
             log = "";
         }
-        String tag = sEnabled ? getFileNameMethodLineNumber(6) : "";
+        String tag = mEnabled ? getFileNameMethodLineNumber(6) : "";
         if (null == tag) {
             tag = "";
         }
 
-        tag = "[" + sFilterTag + "]" + tag;
+        tag = sCommonFilterTag + mFilterTag + tag;
 
         return new String[]{tag, log};
     }
@@ -365,7 +298,7 @@ public class XLog {
      * @param tag
      * @param msg
      */
-    private static void writeToFile(String tag, String msg) {
+    private void writeToFile(String tag, String msg) {
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             Log.e("", "no external storage!!!");
             return;
@@ -373,19 +306,19 @@ public class XLog {
 
         Date date = Calendar.getInstance().getTime();
         final String logName = String.format("%1$04d%2$02d%3$02d.txt",
-                                             date.getYear() + 1900,
-                                             date.getMonth() + 1,
-                                             date.getDate());
-        File fLogDir = new File(sLogDirPath);
+                date.getYear() + 1900,
+                date.getMonth() + 1,
+                date.getDate());
+        File fLogDir = new File(mLogDirPath);
         if (!fLogDir.exists()) {
             if (!fLogDir.mkdirs()) {
-                Log.e("", "create dir[" + sLogDirPath + "]failed!!!");
+                Log.e("", "create dir[" + mLogDirPath + "]failed!!!");
                 return;
             }
         }
 
         try {
-            File f = new File(sLogDirPath + File.separator + logName);
+            File f = new File(mLogDirPath + File.separator + logName);
             if (!f.exists()) {
                 if (!f.createNewFile()) {
                     Log.e("", "create file failed");
@@ -396,11 +329,11 @@ public class XLog {
             OutputStreamWriter swriter = new OutputStreamWriter(fout);
             BufferedWriter bwriter = new BufferedWriter(swriter);
             bwriter.write(String.format("[%1$02d:%2$02d:%3$02d]%4$50s:%5$s\n",
-                                        date.getHours(),
-                                        date.getMinutes(),
-                                        date.getSeconds(),
-                                        tag,
-                                        msg));
+                    date.getHours(),
+                    date.getMinutes(),
+                    date.getSeconds(),
+                    tag,
+                    msg));
             bwriter.flush();
             bwriter.close();
         } catch (IOException e) {
@@ -414,14 +347,16 @@ public class XLog {
      * @param depth 2,the method it self;3,the method who call this method
      * @return filename + method name + line number
      */
-    private static String getFileNameMethodLineNumber(int depth) {
-        String info = new String("");
+    private String getFileNameMethodLineNumber(int depth) {
+        String info = "";
         try {
             StackTraceElement e = Thread.currentThread().getStackTrace()[depth];
-            info = String.format("[%1$s,%2$s,%3$s]",
-                                 e.getFileName(),
-                                 e.getMethodName(),
-                                 e.getLineNumber());
+            if (!TextUtils.isEmpty(e.getFileName()) && !TextUtils.isEmpty(e.getMethodName())) {
+                info = String.format("[%1$s,%2$s,%3$s]",
+                        e.getFileName(),
+                        e.getMethodName(),
+                        e.getLineNumber());
+            }
         } catch (Exception e) {
             Log.e("log", "get stack trace element failed!!!");
         }
