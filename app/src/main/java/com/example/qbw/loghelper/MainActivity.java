@@ -24,6 +24,8 @@ public class MainActivity extends Activity {
         mXLog.setFilterTag("[logtest]");
         mXLog.d(null);
         mXLog.v("1111");
+        XLog.LOGGER.setEnabled(true);
+        XLog.LOGGER.w("oh yeah");
     }
 
     void line1() {

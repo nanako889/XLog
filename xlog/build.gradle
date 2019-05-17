@@ -7,7 +7,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
-        versionName "1.7.2"
+        versionName "2.0"
     }
     buildTypes {
         release {
@@ -19,4 +19,31 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'xlogger'
+
+    publishedGroupId = 'com.qbw.log'
+    libraryName = 'xlogger'
+    artifact = 'xlogger'
+
+    libraryDescription = 'A log helper which can show file name ,method name and line number.Also it can show json format String.'
+
+    siteUrl = 'https://github.com/qbaowei/XLog'
+    gitUrl = 'https://github.com/qbaowei/XLog'
+
+    libraryVersion = '2.0'
+
+    developerId = 'qinbaowei'
+    developerName = 'qinbaowei'
+    developerEmail = 'qbaowei@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+
+    apply from: 'bintray_install.gradle'
+    apply from: 'bintray_upload.gradle'
 }

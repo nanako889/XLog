@@ -26,6 +26,7 @@ import java.util.Set;
 public class XLog {
 
     private static String sCommonFilterTag = "[xlog]";
+    public static final XLog LOGGER = new XLog();
 
     private boolean mEnabled = false;
 
