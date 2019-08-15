@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.qbw.log.XLog;
+import com.qbw.log.L;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
 
-    XLog mXLog=new XLog();
+    L mL = new L();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,61 +20,61 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         String logDir = getExternalFilesDir("log").getAbsolutePath();
         Log.e("-----", logDir);
-        mXLog.setEnabled(true, logDir);
-        mXLog.setFilterTag("[logtest]");
-        mXLog.d(null);
-        mXLog.v("1111");
-        XLog.LOGGER.setEnabled(true);
-        XLog.LOGGER.w("oh yeah");
+        mL.setEnabled(true, logDir);
+        mL.setFilterTag("[logtest]");
+        mL.d(null);
+        mL.v("1111");
+        L.GL.setEnabled(true);
+        L.GL.w("oh yeah");
     }
 
     void line1() {
-        mXLog.line(true);
-        mXLog.i("content");
-        mXLog.line(false);
+        mL.line(true);
+        mL.i("content");
+        mL.line(false);
 
         try {
             int i = 1 / 0;
         } catch (Exception e) {
             e.printStackTrace();
-            mXLog.w(e);
-            mXLog.e(e);
+            mL.w(e);
+            mL.e(e);
         }
         Map<String, String> map = new HashMap<>();
         map.put("key", "haha");
         map.put("key1", "haha1");
-        mXLog.urlE("http://www.baidu.com", map);
-        mXLog.urlD("http://www.baidu.com", map);
-        mXLog.urlI("http://www.baidu.com", map);
-        mXLog.urlW("http://www.baidu.com", map);
-        mXLog.urlV("http://www.baidu.com", map);
+        mL.urlE("http://www.baidu.com", map);
+        mL.urlD("http://www.baidu.com", map);
+        mL.urlI("http://www.baidu.com", map);
+        mL.urlW("http://www.baidu.com", map);
+        mL.urlV("http://www.baidu.com", map);
     }
 
     void infor() {
-        mXLog.i("Hello XLog!");
+        mL.i("Hello L!");
     }
 
     void warn() {
-        mXLog.w("list size is empth");
+        mL.w("list size is empth");
     }
 
     void error() {
-        mXLog.e("wrong position[%d]", -1);
+        mL.e("wrong position[%d]", -1);
     }
 
     int j;
 
     void json1() {
 
-        mXLog.jsonV("{\"code\":1,\"id\":2,\"age\":23,\"data\":[{\"code\":1},{\"code\":2}]}");
-        mXLog.jsonV("[{\"code\":1},{\"code\":2}]");
-        mXLog.jsonE("{\"code\":1,\"id\":2,\"age\":23}");
-        mXLog.jsonD("¹þ¹þ{\"code\":1}");
-        mXLog.jsonI("{\"code\":1}ÎûÎû");
-        mXLog.jsonW("¹þ¹þ{\"code\":1}ÎûÎû");
-        mXLog.jsonD("¹þ¹þ[{\"code\":1},{\"code\":2}]");
-        mXLog.jsonI("[{\"code\":1},{\"code\":2}]ÎûÎû");
-        mXLog.jsonW("¹þ¹þ[{\"code\":1},{\"code\":2}]ÎûÎû");
+        mL.jsonV("{\"code\":1,\"id\":2,\"age\":23,\"data\":[{\"code\":1},{\"code\":2}]}");
+        mL.jsonV("[{\"code\":1},{\"code\":2}]");
+        mL.jsonE("{\"code\":1,\"id\":2,\"age\":23}");
+        mL.jsonD("ï¿½ï¿½ï¿½ï¿½{\"code\":1}");
+        mL.jsonI("{\"code\":1}ï¿½ï¿½ï¿½ï¿½");
+        mL.jsonW("ï¿½ï¿½ï¿½ï¿½{\"code\":1}ï¿½ï¿½ï¿½ï¿½");
+        mL.jsonD("ï¿½ï¿½ï¿½ï¿½[{\"code\":1},{\"code\":2}]");
+        mL.jsonI("[{\"code\":1},{\"code\":2}]ï¿½ï¿½ï¿½ï¿½");
+        mL.jsonW("ï¿½ï¿½ï¿½ï¿½[{\"code\":1},{\"code\":2}]ï¿½ï¿½ï¿½ï¿½");
 
     }
 }

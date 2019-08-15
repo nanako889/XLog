@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 11
-        targetSdkVersion 22
+        targetSdkVersion 28
         versionCode 1
         versionName "2.2"
     }
@@ -19,31 +19,4 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-}
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'xlog'
-
-    publishedGroupId = 'com.qbw.log'
-    libraryName = 'xlog'
-    artifact = 'xlog'
-
-    libraryDescription = 'A log helper which can show file name ,method name and line number.Also it can show json format String.'
-
-    siteUrl = ''
-    gitUrl = ''
-
-    libraryVersion = '3.2'
-
-    developerId = 'qinbaowei'
-    developerName = 'qinbaowei'
-    developerEmail = 'qbaowei@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-
-    apply from: 'bintray_install.gradle'
-    apply from: 'bintray_upload.gradle'
 }

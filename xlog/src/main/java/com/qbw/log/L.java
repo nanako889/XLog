@@ -22,10 +22,10 @@ import java.util.Set;
  */
 
 
-public class XLog {
+public class L {
 
     private static String sCommonFilterTag = "[xlog]";
-    public static final XLog LOGGER = new XLog();
+    public static final L GL = new L();
 
     private boolean mEnabled = false;
 
@@ -229,14 +229,14 @@ public class XLog {
                         jsonLog.append(new JSONObject(message.substring(job, joe + 1)).toString(
                                 JSON_INDENT)).append(LINE_SEPARATOR);
                         jsonLog.append(message.substring(joe + 1, message.length()))
-                                .append(LINE_SEPARATOR);
+                               .append(LINE_SEPARATOR);
                         break;
                     case 1:
                         jsonLog.append(message.substring(0, jab)).append(LINE_SEPARATOR);
                         jsonLog.append(new JSONArray(message.substring(jab, jae + 1)).toString(
                                 JSON_INDENT)).append(LINE_SEPARATOR);
                         jsonLog.append(message.substring(jae + 1, message.length()))
-                                .append(LINE_SEPARATOR);
+                               .append(LINE_SEPARATOR);
                         break;
                     default:
                         break;
@@ -272,10 +272,10 @@ public class XLog {
     public void line(boolean top) {
         if (top) {
             l('v',
-                    "╔═══════════════════════════════════════════════════════════════════════════════════════");
+              "╔═══════════════════════════════════════════════════════════════════════════════════════");
         } else {
             l('v',
-                    "╚═══════════════════════════════════════════════════════════════════════════════════════");
+              "╚═══════════════════════════════════════════════════════════════════════════════════════");
         }
     }
 
@@ -306,9 +306,9 @@ public class XLog {
 
         Date date = Calendar.getInstance().getTime();
         final String logName = String.format("%1$04d%2$02d%3$02d.txt",
-                date.getYear() + 1900,
-                date.getMonth() + 1,
-                date.getDate());
+                                             date.getYear() + 1900,
+                                             date.getMonth() + 1,
+                                             date.getDate());
         File fLogDir = new File(mLogDirPath);
         if (!fLogDir.exists()) {
             if (!fLogDir.mkdirs()) {
@@ -329,11 +329,11 @@ public class XLog {
             OutputStreamWriter swriter = new OutputStreamWriter(fout);
             BufferedWriter bwriter = new BufferedWriter(swriter);
             bwriter.write(String.format("[%1$02d:%2$02d:%3$02d]%4$50s:%5$s\n",
-                    date.getHours(),
-                    date.getMinutes(),
-                    date.getSeconds(),
-                    tag,
-                    msg));
+                                        date.getHours(),
+                                        date.getMinutes(),
+                                        date.getSeconds(),
+                                        tag,
+                                        msg));
             bwriter.flush();
             bwriter.close();
         } catch (IOException e) {
@@ -353,9 +353,9 @@ public class XLog {
             StackTraceElement e = Thread.currentThread().getStackTrace()[depth];
             if (!TextUtils.isEmpty(e.getFileName()) && !TextUtils.isEmpty(e.getMethodName())) {
                 info = String.format("[%1$s,%2$s,%3$s]",
-                        e.getFileName(),
-                        e.getMethodName(),
-                        e.getLineNumber());
+                                     e.getFileName(),
+                                     e.getMethodName(),
+                                     e.getLineNumber());
             }
         } catch (Exception e) {
             Log.e("log", "get stack trace element failed!!!");
